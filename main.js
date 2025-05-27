@@ -1,6 +1,12 @@
-const { app, BrowserWindow, ipcMain } = require('electron/main')
+`use strict`
+const { app, BrowserWindow, ipcMain, autoUpdater } = require('electron/main')
 const path = require('node:path')
-require('update-electron-app')()
+require('update-electron-app')
+
+const server = 'https://update.electronjs.org'
+const feed = `${server}/Rian-Sm/Electron-demo/${process.platform}-${process.arch}/${app.getVersion()}`
+
+autoUpdater.setFeedURL(feed)
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -16,6 +22,7 @@ const createWindow = () => {
 
 app.whenReady().then(() => {
   ipcMain.handle('ping', () => 'pong')
+  ipcMain.handle('get-version', () => app.getVersion())
   createWindow()
 
   app.on('activate', () => {
