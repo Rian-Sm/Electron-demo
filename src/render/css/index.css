@@ -1,0 +1,28 @@
+ body {
+        margin: 0;
+        padding: 0;
+        background: transparent;
+      }
+      svg {
+        width: 300px;
+        height: 300px;
+        -webkit-app-region: drag;
+      }
+      .slice {
+        fill: #4a90e2;
+        cursor: pointer;
+        transition: fill 0.2s;
+      }
+      .slice:hover {
+        fill: #ff6b6b;
+      }
+      .slice:focus {
+        outline: 2px solid white;
+      }
+      .label {
+        fill: white;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        text-anchor: middle;
+        pointer-events: none; /* Evita interferência com cliques no path */
+      }

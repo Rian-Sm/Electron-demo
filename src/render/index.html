@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pizza Interativa com 8 Botões</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: transparent;
+      }
+      svg {
+        width: 300px;
+        height: 300px;
+      }
+      .slice {
+        cursor: pointer;
+        transition: fill 0.2s;
+        -webkit-app-region: no-drag;
+        pointer-events: auto;
+      }
+      .slice:hover {
+        fill: #ff6b6b;
+      }
+      .slice:focus {
+        outline: 2px solid white;
+      }
+      .label {
+        fill: white;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        text-anchor: middle;
+        pointer-events: none; /* Evita interferência com cliques no path */
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="300" height="300" viewBox="0 0 300 300">
+      <circle cx="150" cy="150" r="150" fill="transparent" />
+      <!-- Segmentos serão adicionados via JavaScript -->
+    </svg>
+    <script>
+      const numSlices = 8;
+      const radius = 150;
+      const svg = document.querySelector('svg');
+
+      // Funções de exemplo para cada botão
+      const buttonActions = [
+        () => alert('Botão 1: Abrir Configurações'),
+        () => alert('Botão 2: Salvar Arquivo'),
+        () => alert('Botão 3: Abrir Janela'),
+        () => alert('Botão 4: Fechar Aplicativo'),
+        () => alert('Botão 5: Ação Personalizada 1'),
+        () => alert('Botão 6: Ação Personalizada 2'),
+        () => alert('Botão 7: Ação Personalizada 3'),
+        () => alert('Botão 8: Ação Personalizada 4')
+      ];
+      const colors = [
+        '#4a90e2', 
+        '#ff6b6b', 
+        '#2ecc71', 
+        '#f1c40f', 
+        '#9b59b6', 
+        '#e74c3c', 
+        '#3498db', 
+        '#1abc9c'
+      ];
+
+      // Gera os segmentos e rótulos
+      for (let i = 0; i < numSlices; i++) {
+        // Calcular ângulos
+        const startAngle = (i * 360 / numSlices) * (Math.PI / 180);
+        const endAngle = ((i + 1) * 360 / numSlices) * (Math.PI / 180);
+        const x1 = 150 + radius * Math.cos(startAngle);
+        const y1 = 150 + radius * Math.sin(startAngle);
+        const x2 = 150 + radius * Math.cos(endAngle);
+        const y2 = 150 + radius * Math.sin(endAngle);
+
+        // Criar path
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', `M150,150 L${x1},${y1} A150,150 0 0,1 ${x2},${y2} Z`);
+        path.classList.add('slice');
+        path.setAttribute('fill', colors[i]);
+        path.setAttribute('tabindex', '0');
+        path.setAttribute('role', 'button');
+        path.setAttribute('aria-label', `Botão ${i + 1}`);
+        path.addEventListener('click', buttonActions[i]);
+        svg.appendChild(path);
+
+        // Adicionar rótulo (opcional)
+        const labelAngle = (startAngle + endAngle) / 2;
+        const labelX = 150 + (radius * 0.6) * Math.cos(labelAngle); // 60% do raio para posicionamento
+        const labelY = 150 + (radius * 0.6) * Math.sin(labelAngle);
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', labelX);
+        text.setAttribute('y', labelY);
+        text.setAttribute('class', 'label');
+        text.textContent = `Btn ${i + 1}`;
+        svg.appendChild(text);
+      }
+
+      // Suporte a teclado
+      document.querySelectorAll('.slice').forEach(slice => {
+        slice.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            slice.dispatchEvent(new Event('click'));
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

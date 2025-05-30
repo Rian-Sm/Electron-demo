@@ -12,7 +12,7 @@
 Os comandos de script do projeto foram montados no `package.json`
 
 ```shell
-npm run init
+npm run start
 ```
 
 ## Building

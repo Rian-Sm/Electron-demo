@@ -10,18 +10,25 @@ autoUpdater.setFeedURL(feed)
 
 const createWindow = () => {
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 310,
+    height: 310,
+    frame: false,
+    transparent: true,
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+    titleBarStyle: 'hidden',
+    movable: false,
+    resizable: false,
+    fullscreenable: false,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'src/main/preload.js'),
+      contextIsolation: true,
     }
   })
 
-  win.loadFile('index.html')
+  win.loadFile('src/render/index.html')
 }
 
 app.whenReady().then(() => {
-  ipcMain.handle('ping', () => 'pong')
   ipcMain.handle('get-version', () => app.getVersion())
   createWindow()
 
